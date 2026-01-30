@@ -46,7 +46,7 @@ if '상대아이템' not in st.session_state:
 if 'last_ticket_time' not in st.session_state:
     st.session_state.last_ticket_time = time.time()
 
-if time.time() - st.session_state.last_ticket_time >= 3:
+if time.time() - st.session_state.last_ticket_time >= 1:
     st.session_state.user_db['tickets'] += random.randint(1, 3)
     st.session_state.last_ticket_time = time.time()
 
@@ -113,10 +113,12 @@ else:
                 st.session_state.user_db['아이템개수'][a["name"]]+=1    
                 st.write(a['name'],'뽑기 성공!')
                 st.image(a['img'])
+                st.rerun()
         if st.session_state.user_db['돈']>= 30:
             if st.button('뽑기권 1개 구매(30원)'):
                 st.session_state.user_db['돈'] -= 30
                 st.session_state.user_db['tickets'] += 1
+                st.rerun()
     elif menu == '📖 도감':
         cols = st.columns(4)
         for idx, item in enumerate(items):
@@ -153,9 +155,9 @@ else:
                         st.session_state.user_db['아이템명'].remove(아이템)
                     st.session_state.상대아이템 = random.choice(items)
                     st.session_state.user_db['돈']+=5
+                    st.rerun()
         with cols[2]:
             st.markdown('')
             st.markdown('')
             st.markdown(f'/{총개수}개')
             st.image(st.session_state.상대아이템['img'])
-
