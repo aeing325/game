@@ -56,40 +56,40 @@ if not st.session_state.logged_in:
     st.session_state.logged_in = True
     st.rerun()
 
-    # if st.session_state.page == 'login':
-    #     st.image("기본창.png", width=True) 
-    #     st.write("## 로그인")
-    #     user_id = st.text_input("ID", placeholder="아이디를 입력하세요") 
-    #     user_pw = st.text_input("PW", type="password", placeholder="비밀번호를 입력하세요") 
+    if st.session_state.page == 'login':
+        st.image("기본창.png", width=True) 
+        st.write("## 로그인")
+        user_id = st.text_input("ID", placeholder="아이디를 입력하세요") 
+        user_pw = st.text_input("PW", type="password", placeholder="비밀번호를 입력하세요") 
 
-    #     if st.button("로그인하기"):
-    #         if user_id in st.session_state.user_db and st.session_state.user_db[user_id] == user_pw: 
-    #             st.session_state.page = '뽑기' 
-    #             st.session_state.logged_in = True
-    #             st.rerun() 
-    #         else: 
-    #             st.error("아이디 또는 비밀번호가 틀렸습니다.") 
+        if st.button("로그인하기"):
+            if user_id in st.session_state.user_db and st.session_state.user_db[user_id] == user_pw: 
+                st.session_state.page = '뽑기' 
+                st.session_state.logged_in = True
+                st.rerun() 
+            else: 
+                st.error("아이디 또는 비밀번호가 틀렸습니다.") 
 
-    #     if st.button("회원가입하기"):
-    #         st.session_state.page = 'signup'
-    #         st.rerun()
+        if st.button("회원가입하기"):
+            st.session_state.page = 'signup'
+            st.rerun()
     
-    # elif st.session_state.page == 'signup':
-    #     st.image("기본창.png", width=True)
-    #     st.write("## 회원가입")
-    #     signup_id = st.text_input("ID", placeholder="아이디를 입력하세요")
-    #     signup_pw = st.text_input("PW", type="password", placeholder="비밀번호를 입력하세요") 
+    elif st.session_state.page == 'signup':
+        st.image("기본창.png", width=True)
+        st.write("## 회원가입")
+        signup_id = st.text_input("ID", placeholder="아이디를 입력하세요")
+        signup_pw = st.text_input("PW", type="password", placeholder="비밀번호를 입력하세요") 
 
-    #     if st.button("회원가입확인"):
-    #         if signup_id in st.session_state.user_db: 
-    #             st.error("아이디 중복!") 
-    #         elif signup_id and signup_pw: 
-    #             st.session_state.user_db[signup_id]=signup_pw
-    #             st.session_state.user_db['tickets']=3
-    #             st.session_state.page = 'login'
-    #             st.rerun() 
-    #         else:
-    #             st.warning('둘다 입력')
+        if st.button("회원가입확인"):
+            if signup_id in st.session_state.user_db: 
+                st.error("아이디 중복!") 
+            elif signup_id and signup_pw: 
+                st.session_state.user_db[signup_id]=signup_pw
+                st.session_state.user_db['tickets']=3
+                st.session_state.page = 'login'
+                st.rerun() 
+            else:
+                st.warning('둘다 입력')
             
 else:
     
@@ -113,10 +113,10 @@ else:
                 st.session_state.user_db['아이템개수'][a["name"]]+=1    
                 st.write(a['name'],'뽑기 성공!')
                 st.image(a['img'])
-                if st.session_state.user_db['돈']>= 30:
-                    if st.button('뽑기권 1개 구매(30원)'):
-                        st.session_state.user_db['돈'] -= 30
-                        st.session_state.user_db['tickets'] += 1
+        if st.session_state.user_db['돈']>= 30:
+            if st.button('뽑기권 1개 구매(30원)'):
+                st.session_state.user_db['돈'] -= 30
+                st.session_state.user_db['tickets'] += 1
     elif menu == '📖 도감':
         cols = st.columns(4)
         for idx, item in enumerate(items):
@@ -158,3 +158,4 @@ else:
             st.markdown('')
             st.markdown(f'/{총개수}개')
             st.image(st.session_state.상대아이템['img'])
+
