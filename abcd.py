@@ -6,16 +6,16 @@ st.set_page_config(page_title="Mobile Random Box", layout="centered")
 
 
 items = [
-    {"name": "게임보이", "img": "게임보이.jpeg", "가격":'100원'},
-    {"name": "빈 음료수 캔", "img": "빈 음료수 캔.jpeg", '가격':'10원'},
-    {"name": "낡은 백과사전", "img": "낡은 백과사전.jpeg", '가격':'50원'},
-    {"name": "플라스틱 우산", "img": "플라스틱 우산.jpeg", '가격':'70원'},
-    {"name": "지우개", "img": "지우개.jpeg", '가격':'15원'},
-    {"name": "연필", "img": "연필.jpeg", '가격':'10원'},
-    {"name": "공책", "img": "공책.jpeg", '가격':'30원'},
-    {"name": "고장 난 리모컨", "img": "고장 난 리모컨.jpeg", '가격':'10원'},
-    {"name": "비닐봉지", "img": "비닐봉지.jpeg", '가격':'5원'},
-    {"name": "동전", "img": "동전.jpeg", '가격':'100원'}
+    {"name": "게임보이", "img": "게임보이.jpeg", "가격":'100'},
+    {"name": "빈 음료수 캔", "img": "빈 음료수 캔.jpeg", '가격':'10'},
+    {"name": "낡은 백과사전", "img": "낡은 백과사전.jpeg", '가격':'50'},
+    {"name": "플라스틱 우산", "img": "플라스틱 우산.jpeg", '가격':'70'},
+    {"name": "지우개", "img": "지우개.jpeg", '가격':'15'},
+    {"name": "연필", "img": "연필.jpeg", '가격':'10'},
+    {"name": "공책", "img": "공책.jpeg", '가격':'30'},
+    {"name": "고장 난 리모컨", "img": "고장 난 리모컨.jpeg", '가격':'10'},
+    {"name": "비닐봉지", "img": "비닐봉지.jpeg", '가격':'5'},
+    {"name": "동전", "img": "동전.jpeg", '가격':'100'}
 ]
 
 아이템개수 = {
@@ -43,18 +43,11 @@ if 'user_db' not in st.session_state:
 if '상대아이템' not in st.session_state:
     st.session_state.상대아이템 = random.choice(items)
 
-if 'last_ticket_time' not in st.session_state:
-    st.session_state.last_ticket_time = time.time()
-
-if time.time() - st.session_state.last_ticket_time >= 1:
-    st.session_state.user_db['tickets'] += random.randint(1, 3)
-    st.session_state.last_ticket_time = time.time()
-
 
 
 if not st.session_state.logged_in:
-    st.session_state.logged_in = True
-    st.rerun()
+    # st.session_state.logged_in = True
+    # st.rerun()
 
     if st.session_state.page == 'login':
         st.image("기본창.png", width=True) 
@@ -125,10 +118,10 @@ else:
             with cols[idx % 4]:
                 if item['name'] in st.session_state.user_db['아이템명']:
                     st.image(item['img'])
-                    st.markdown(f"✅ **{item['name']} {st.session_state.user_db['아이템개수'][item['name']]}개/{item['가격']}**")
+                    st.markdown(f"✅ **{item['name']} {st.session_state.user_db['아이템개수'][item['name']]}개/{item['가격']}원**")
                 else:
                     st.image('없음.jpeg')
-                    st.markdown(f"⬜ {item['name']}")
+                    st.markdown(f"⬜ {item['name']}/{item['가격']}원")
 
     elif menu == '🏪 거래소':
         cols = st.columns(4)
@@ -154,8 +147,20 @@ else:
                     if st.session_state.user_db['아이템개수'][아이템] <= 0:
                         st.session_state.user_db['아이템명'].remove(아이템)
                     st.session_state.상대아이템 = random.choice(items)
-                    st.session_state.user_db['돈']+=5
+
+#gpt 부분 --------------------------------------------------------------------------------------                   
+                    # 내가 준 아이템 가격
+                    내가격 = int([x for x in items if x['name'] == 아이템][0]['가격'])
+
+                    # 상대 아이템 가격
+                    상대가격 = int(st.session_state.상대아이템['가격'])
+
+                    # 차액 지급 (상대 - 나)
+                    st.session_state.user_db['돈'] += (상대가격 - 내가격)
+
+                    st.session_state.user_db['tickets']+=1
                     st.rerun()
+#gpt 부분 --------------------------------------------------------------------------------------
         with cols[2]:
             st.markdown('')
             st.markdown('')
